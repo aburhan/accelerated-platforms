@@ -30,11 +30,11 @@ steps:
       - PROJECT_ID=${PROJECT_ID}
       - SHORT_SHA=${SHORT_SHA}
     id: "Configure the build environment"
-    name: "gcr.io/google.com/cloudsdk/cloud-sdk"
+    name: "${LOCATION}-docker.pkg.dev/${PROJECT_ID}/ci-cd/runner:latest"
 
   - entrypoint: "test/ci-cd/scripts/cloudbuild/create_iap_brand.sh"
     id: "Create the IAP Brand"
-    name: "gcr.io/google.com/cloudsdk/cloud-sdk"
+    name: "${LOCATION}-docker.pkg.dev/${PROJECT_ID}/ci-cd/runner:latest"
     waitFor:
       - "Configure the build environment"
 
@@ -43,7 +43,7 @@ steps:
       - "platforms/gke/base/use-cases/inference-ref-arch/terraform/deploy-comfyui.sh"
     entrypoint: "test/ci-cd/scripts/platforms/gke/base/run_deploy_script.sh"
     id: "Deploy platforms/gke/base/use-cases/inference-ref-arch/comfyui"
-    name: "gcr.io/google.com/cloudsdk/cloud-sdk"
+    name: "${LOCATION}-docker.pkg.dev/${PROJECT_ID}/ci-cd/runner:latest"
     waitFor:
       - "Create the IAP Brand"
 
@@ -52,7 +52,7 @@ steps:
       - workflow_api
     entrypoint: "test/ci-cd/scripts/terraservice/apply.sh"
     id: "Apply inference-ref-arch Terraservice 'workflow_api'"
-    name: "gcr.io/google.com/cloudsdk/cloud-sdk"
+    name: "${LOCATION}-docker.pkg.dev/${PROJECT_ID}/ci-cd/runner:latest"
     waitFor:
       - "Deploy platforms/gke/base/use-cases/inference-ref-arch/comfyui"
 
@@ -61,7 +61,7 @@ steps:
       - workflow_api
     entrypoint: "test/ci-cd/scripts/terraservice/plan.sh"
     id: "Check inference-ref-arch Terraservice 'workflow_api' check for changes"
-    name: "gcr.io/google.com/cloudsdk/cloud-sdk"
+    name: "${LOCATION}-docker.pkg.dev/${PROJECT_ID}/ci-cd/runner:latest"
     waitFor:
       - "Apply inference-ref-arch Terraservice 'workflow_api'"
 

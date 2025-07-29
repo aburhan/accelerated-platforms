@@ -30,13 +30,13 @@ steps:
       - PROJECT_ID=${PROJECT_ID}
       - SHORT_SHA=${SHORT_SHA}
     id: "Configure the build environment"
-    name: "${LOCATION}-docker.pkg.dev/${PROJECT_ID}/ci-cd/runner:latest"
+    name: "gcr.io/google.com/cloudsdk/cloud-sdk"
     waitFor:
       - "Check triggers"
 
   - entrypoint: "test/ci-cd/scripts/cloudbuild/create_iap_brand.sh"
     id: "Create the IAP Brand"
-    name: "${LOCATION}-docker.pkg.dev/${PROJECT_ID}/ci-cd/runner:latest"
+    name: "gcr.io/google.com/cloudsdk/cloud-sdk"
     waitFor:
       - "Configure the build environment"
 
@@ -45,7 +45,7 @@ steps:
       - "platforms/gke/base/use-cases/inference-ref-arch/terraform/deploy-comfyui.sh"
     entrypoint: "test/ci-cd/scripts/platforms/gke/base/run_deploy_script.sh"
     id: "Deploy platforms/gke/base/use-cases/inference-ref-arch/comfyui"
-    name: "${LOCATION}-docker.pkg.dev/${PROJECT_ID}/ci-cd/runner:latest"
+    name: "gcr.io/google.com/cloudsdk/cloud-sdk"
     waitFor:
       - "Create the IAP Brand"
 
@@ -54,7 +54,7 @@ steps:
       - workflow_api
     entrypoint: "test/ci-cd/scripts/terraservice/apply.sh"
     id: "Apply inference-ref-arch Terraservice 'workflow_api'"
-    name: "${LOCATION}-docker.pkg.dev/${PROJECT_ID}/ci-cd/runner:latest"
+    name: "gcr.io/google.com/cloudsdk/cloud-sdk"
     waitFor:
       - "Deploy platforms/gke/base/use-cases/inference-ref-arch/comfyui"
 
@@ -63,7 +63,7 @@ steps:
       - workflow_api
     entrypoint: "test/ci-cd/scripts/terraservice/plan.sh"
     id: "Check inference-ref-arch Terraservice 'workflow_api' check for changes"
-    name: "${LOCATION}-docker.pkg.dev/${PROJECT_ID}/ci-cd/runner:latest"
+    name: "gcr.io/google.com/cloudsdk/cloud-sdk"
     waitFor:
       - "Apply inference-ref-arch Terraservice 'workflow_api'"
 
@@ -72,7 +72,7 @@ steps:
       - workflow_api
     entrypoint: "test/ci-cd/scripts/terraservice/destroy.sh"
     id: "Destroy inference-ref-arch Terraservice 'workflow_api'"
-    name: "${LOCATION}-docker.pkg.dev/${PROJECT_ID}/ci-cd/runner:latest"
+    name: "gcr.io/google.com/cloudsdk/cloud-sdk"
     waitFor:
       - "Check inference-ref-arch Terraservice 'workflow_api' check for changes"
 

@@ -33,8 +33,8 @@ By the end of this guide, you should be able to perform the following steps:
 - Clone the repository.
 
   ```sh
-  git clone https://github.com/GoogleCloudPlatform/accelerated-platforms && \
-  cd accelerated-platforms
+  git clone https://github.com/GoogleCloudPlatform/comfyui-ab4 && \
+  cd comfyui-ab4
   ```
 
 - Change directory to the guide directory.

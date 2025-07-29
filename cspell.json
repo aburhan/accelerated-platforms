@@ -3,8 +3,8 @@
   "version": "0.2",
   "dictionaryDefinitions": [
     {
-      "name": "accelerated-platforms",
-      "path": ".github/workflows/dictionary/accelerated-platforms.txt"
+      "name": "comfyui-ab4",
+      "path": ".github/workflows/dictionary/comfyui-ab4.txt"
     },
     {
       "name": "comfyui",
@@ -76,7 +76,7 @@
     }
   ],
   "dictionaries": [
-    "accelerated-platforms",
+    "comfyui-ab4",
     "comfyui",
     "docker",
     "flipkart",

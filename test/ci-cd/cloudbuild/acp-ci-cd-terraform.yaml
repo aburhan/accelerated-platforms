@@ -27,7 +27,7 @@ steps:
   waitFor: ["-"]
 
 - name: "${LOCATION}-docker.pkg.dev/${PROJECT_ID}/ci-cd/runner:latest"
-  id: "Apply GoogleCloudPlatform/accelerated-platforms CI/CD Terraform"
+  id: "Apply GoogleCloudPlatform/comfyui-ab4 CI/CD Terraform"
   entrypoint: "ash"
   args:
     - "-x"

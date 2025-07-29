@@ -5,8 +5,8 @@
 - Clone the repository and change directory to the ml-platform directory
 
   ```
-  git clone https://github.com/GoogleCloudPlatform/accelerated-platforms && \
-  cd accelerated-platforms
+  git clone https://github.com/GoogleCloudPlatform/comfyui-ab4 && \
+  cd comfyui-ab4
   ```
 
 - Set environment variables

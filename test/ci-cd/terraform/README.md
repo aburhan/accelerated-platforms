@@ -1,4 +1,4 @@
-# accelerated-platforms CI/CD Terraform
+# comfyui-ab4 CI/CD Terraform
 
 This folder contains the IaC for the CI/CD environment of this repository.
 
@@ -11,7 +11,7 @@ This folder contains the IaC for the CI/CD environment of this repository.
   ```
 
   ```
-  build_project_id = "accelerated-platforms"
+  build_project_id = "comfyui-ab4"
   build_location   = "us-central1"
   ```
 

@@ -45,8 +45,8 @@ The data processing step takes approximately 18-20 minutes.
 - Clone the repository and change directory to the guide directory
 
   ```shell
-  git clone https://github.com/GoogleCloudPlatform/accelerated-platforms && \
-  cd accelerated-platforms/use-cases/model-fine-tuning-pipeline/data-processing/ray
+  git clone https://github.com/GoogleCloudPlatform/comfyui-ab4 && \
+  cd comfyui-ab4/use-cases/model-fine-tuning-pipeline/data-processing/ray
   ```
 
 - Ensure that your `MLP_ENVIRONMENT_FILE` is configured

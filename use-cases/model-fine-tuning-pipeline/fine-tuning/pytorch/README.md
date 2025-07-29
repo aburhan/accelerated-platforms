@@ -26,8 +26,8 @@ prepared by the Llama 3.1 on Vertex AI API.
 - Clone the repository and change directory to the guide directory
 
   ```sh
-  git clone https://github.com/GoogleCloudPlatform/accelerated-platforms && \
-  cd accelerated-platforms/use-cases/model-fine-tuning-pipeline/fine-tuning/pytorch
+  git clone https://github.com/GoogleCloudPlatform/comfyui-ab4 && \
+  cd comfyui-ab4/use-cases/model-fine-tuning-pipeline/fine-tuning/pytorch
   ```
 
 - Ensure that your `MLP_ENVIRONMENT_FILE` is configured

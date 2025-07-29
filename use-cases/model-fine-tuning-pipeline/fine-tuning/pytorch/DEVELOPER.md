@@ -12,13 +12,13 @@
 - Clone the repository
 
   ```
-  git clone https://github.com/GoogleCloudPlatform/accelerated-platforms
+  git clone https://github.com/GoogleCloudPlatform/comfyui-ab4
   ```
 
 - Change directory to the `src` directory
 
   ```
-  cd accelerated-platforms/use-cases/model-fine-tuning-pipeline/fine-tuning/pytorch/src
+  cd comfyui-ab4/use-cases/model-fine-tuning-pipeline/fine-tuning/pytorch/src
   ```
 
 - Set the local `python` version

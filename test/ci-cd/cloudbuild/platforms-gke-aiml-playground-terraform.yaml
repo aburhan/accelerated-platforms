@@ -56,6 +56,6 @@ steps:
       - "Check triggers"
 
 substitutions:
-  _IAP_DOMAIN: "accelerated-platforms.joonix.net"
+  _IAP_DOMAIN: "comfyui-ab4.joonix.net"
 
 timeout: 90m

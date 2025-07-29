@@ -11,8 +11,8 @@
 - Clone the repository and set the repository directory environment variable.
 
   ```
-  git clone https://github.com/GoogleCloudPlatform/accelerated-platforms && \
-  cd accelerated-platforms && \
+  git clone https://github.com/GoogleCloudPlatform/comfyui-ab4 && \
+  cd comfyui-ab4 && \
   export ACP_REPO_DIR="$(pwd)"
   ```
 

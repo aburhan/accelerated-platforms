@@ -18,21 +18,11 @@ options:
 
 steps:
   - args:
-      - "${_WAIT_FOR_TRIGGER}"
-    entrypoint: "test/ci-cd/scripts/cloudbuild/wait_for_trigger.sh"
-    env:
-      - "LOCATION=${LOCATION}"
-      - "PROJECT_ID=${PROJECT_ID}"
-    id: "Check triggers"
-    name: "${LOCATION}-docker.pkg.dev/${PROJECT_ID}/ci-cd/runner:latest"
-    waitFor: ["-"]
-
-  - args:
       - DEBUG=${_DEBUG}
       - TF_VAR_platform_default_project_id="${PROJECT_ID}-$${PROJECT_SUFFIX}"
       - TF_VAR_platform_name="ch${SHORT_SHA}"
       - IAP_PROJECT_ID="${PROJECT_ID}-$${PROJECT_SUFFIX}"
-      - TF_VAR_comfyui_iap_domain="accelerated-platforms.joonix.net"
+      - TF_VAR_comfyui_iap_domain="comfyui-ab4.joonix.net"
     entrypoint: "test/ci-cd/scripts/platforms/gke/base/configure_build_environment.sh"
     env:
       - BUILD_ID=${BUILD_ID}
@@ -85,29 +75,6 @@ steps:
     name: "${LOCATION}-docker.pkg.dev/${PROJECT_ID}/ci-cd/runner:latest"
     waitFor:
       - "Check inference-ref-arch Terraservice 'workflow_api' check for changes"
-
-  - args:
-      - "Teardown platforms/gke/base/use-cases/inference-ref-arch/comfyui"
-      - "platforms/gke/base/use-cases/inference-ref-arch/terraform/teardown-comfyui.sh"
-    entrypoint: "test/ci-cd/scripts/platforms/gke/base/run_teardown_script.sh"
-    id: "Teardown platforms/gke/base/use-cases/inference-ref-arch/comfyui"
-    name: "${LOCATION}-docker.pkg.dev/${PROJECT_ID}/ci-cd/runner:latest"
-    waitFor:
-      - "Destroy inference-ref-arch Terraservice 'workflow_api'"
-
-  - args:
-      - "Cleanup the build environment"
-    entrypoint: "test/ci-cd/scripts/platforms/gke/base/cleanup_build_environment.sh"
-    id: "Cleanup the build environment"
-    name: "${LOCATION}-docker.pkg.dev/${PROJECT_ID}/ci-cd/runner:latest"
-    waitFor:
-      - "Teardown platforms/gke/base/use-cases/inference-ref-arch/comfyui"
-
-  - entrypoint: "test/ci-cd/scripts/platforms/gke/base/set_build_status.sh"
-    id: "Set the build status"
-    name: "${LOCATION}-docker.pkg.dev/${PROJECT_ID}/ci-cd/runner:latest"
-    waitFor:
-      - "Cleanup the build environment"
 
 substitutions:
   _DEBUG: "false"

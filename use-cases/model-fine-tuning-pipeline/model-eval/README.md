@@ -33,8 +33,8 @@ validate the results.
 - Clone the repository and change directory to the guide directory
 
   ```
-  git clone https://github.com/GoogleCloudPlatform/accelerated-platforms && \
-  cd accelerated-platforms/use-cases/model-fine-tuning-pipeline/model-eval
+  git clone https://github.com/GoogleCloudPlatform/comfyui-ab4 && \
+  cd comfyui-ab4/use-cases/model-fine-tuning-pipeline/model-eval
   ```
 
 - Ensure that your `MLP_ENVIRONMENT_FILE` is configured

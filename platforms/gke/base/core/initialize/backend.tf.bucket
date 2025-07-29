@@ -14,7 +14,7 @@
 
 terraform {
   backend "gcs" {
-    bucket = ""
+    bucket = "comfyui-ab4-inf-dev-terraform"
     prefix = "terraform/core/initialize"
   }
 }

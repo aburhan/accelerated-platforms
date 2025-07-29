@@ -48,8 +48,8 @@ resource "google_cloudbuildv2_connection" "github" {
 
 resource "google_cloudbuildv2_repository" "accelerated_platforms" {
   location          = var.build_location
-  name              = "aburhan-accelerated-platforms"
+  name              = "GoogleCloudPlatform-comfyui-ab4"
   parent_connection = google_cloudbuildv2_connection.github.name
   project           = data.google_project.build.project_id
-  remote_uri        = "https://github.com/aburhan/accelerated-platforms.git"
+  remote_uri        = "https://github.com/aburhan/comfyui-ab4.git"
 }

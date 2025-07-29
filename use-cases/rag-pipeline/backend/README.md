@@ -12,8 +12,8 @@
 - Clone the repository.
 
   ```shell
-  git clone https://github.com/GoogleCloudPlatform/accelerated-platforms && \
-  cd accelerated-platforms
+  git clone https://github.com/GoogleCloudPlatform/comfyui-ab4 && \
+  cd comfyui-ab4
   ```
 
 - Change directory to the guide directory.

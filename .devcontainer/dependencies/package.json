@@ -1,5 +1,5 @@
 {
-  "name": "accelerated-platforms-devcontainer",
+  "name": "comfyui-ab4-devcontainer",
   "dependencies": {
     "prettier": "~3.4.2"
   }

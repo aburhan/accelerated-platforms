@@ -20,8 +20,8 @@ For more details, see
 - Clone the repository and change directory to the guide directory.
 
   ```sh
-  git clone https://github.com/GoogleCloudPlatform/accelerated-platforms && \
-  cd accelerated-platforms
+  git clone https://github.com/GoogleCloudPlatform/comfyui-ab4 && \
+  cd comfyui-ab4
   ```
 
 - Change directory to the guide directory.
@@ -247,7 +247,7 @@ that allows you to import dashboard files in the Grafana JSON format.
   Converting: vLLM
   ✓ vLLM converted successfully
 
-  Conversion of /XXXXXXXXXX/XXXXXXXXXX/XXXXXXXXXX/accelerated-platforms/use-cases/inferencing/serving/vllm/metrics/dashboard/grafana-vllm.json complete. Conversion Report located at: reports/YYYY-MM-DD/HH:MM:SS/report.json
+  Conversion of /XXXXXXXXXX/XXXXXXXXXX/XXXXXXXXXX/comfyui-ab4/use-cases/inferencing/serving/vllm/metrics/dashboard/grafana-vllm.json complete. Conversion Report located at: reports/YYYY-MM-DD/HH:MM:SS/report.json
 
 
   To upload these dashboard(s) manually, you can run:

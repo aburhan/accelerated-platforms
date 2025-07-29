@@ -35,8 +35,8 @@ approximately 1 hour and 40 minutes.
 - Clone the repository and change directory to the guide directory
 
   ```sh
-  git clone https://github.com/GoogleCloudPlatform/accelerated-platforms && \
-  cd accelerated-platforms/use-cases/model-fine-tuning-pipeline/data-preparation/gemma-it
+  git clone https://github.com/GoogleCloudPlatform/comfyui-ab4 && \
+  cd comfyui-ab4/use-cases/model-fine-tuning-pipeline/data-preparation/gemma-it
   ```
 
 - Ensure that your `MLP_ENVIRONMENT_FILE` is configured

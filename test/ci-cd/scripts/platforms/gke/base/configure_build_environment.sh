@@ -36,7 +36,6 @@ export TERM="xterm"
 export ACP_REPO_DIR="${ACP_REPO_DIR}"
 export ACP_PLATFORM_BASE_DIR="\${ACP_REPO_DIR}/platforms/gke/base"
 export ACP_PLATFORM_CORE_DIR="\${ACP_PLATFORM_BASE_DIR}/core"
-export PROJECT_SUFFIX=${PROJECT_SUFFIX}
 
 EOT
 
@@ -53,6 +52,3 @@ echo
 set --
 source "${ACP_PLATFORM_BASE_DIR}/_shared_config/scripts/set_environment_variables.sh"
 
-# Create a dedicated project
-export NEW_PROJECT_ID="${platform_default_project_id}"
-${ACP_REPO_DIR}/test/ci-cd/scripts/create_project.sh

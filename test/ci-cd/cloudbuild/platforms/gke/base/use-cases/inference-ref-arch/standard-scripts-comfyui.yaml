@@ -41,23 +41,23 @@ steps:
     waitFor:
       - "Configure the build environment"
 
-  - args:
-      - platforms/gke/base/use-cases/inference-ref-arch/terraform
-      - workflow_api
-    entrypoint: "test/ci-cd/scripts/terraservice/apply.sh"
-    id: "Apply inference-ref-arch Terraservice 'workflow_api'"
-    name: "${LOCATION}-docker.pkg.dev/${PROJECT_ID}/ci-cd/runner:latest"
-    waitFor:
-      - "Deploy platforms/gke/base/use-cases/inference-ref-arch/comfyui"
+  #- args:
+  #    - platforms/gke/base/use-cases/inference-ref-arch/terraform
+  #    - workflow_api
+  #  entrypoint: "test/ci-cd/scripts/terraservice/apply.sh"
+  #  id: "Apply inference-ref-arch Terraservice 'workflow_api'"
+  #  name: "${LOCATION}-docker.pkg.dev/${PROJECT_ID}/ci-cd/runner:latest"
+  #  waitFor:
+  #    - "Deploy platforms/gke/base/use-cases/inference-ref-arch/comfyui"
 
-  - args:
-      - platforms/gke/base/use-cases/inference-ref-arch/terraform
-      - workflow_api
-    entrypoint: "test/ci-cd/scripts/terraservice/plan.sh"
-    id: "Check inference-ref-arch Terraservice 'workflow_api' check for changes"
-    name: "${LOCATION}-docker.pkg.dev/${PROJECT_ID}/ci-cd/runner:latest"
-    waitFor:
-      - "Apply inference-ref-arch Terraservice 'workflow_api'"
+  #- args:
+  #    - platforms/gke/base/use-cases/inference-ref-arch/terraform
+  #    - workflow_api
+  #  entrypoint: "test/ci-cd/scripts/terraservice/plan.sh"
+  #  id: "Check inference-ref-arch Terraservice 'workflow_api' check for changes"
+  #  name: "${LOCATION}-docker.pkg.dev/${PROJECT_ID}/ci-cd/runner:latest"
+  #  waitFor:
+  #    - "Apply inference-ref-arch Terraservice 'workflow_api'"
 
 
 substitutions:

@@ -12,5 +12,5 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-build_project_id = "accelerated-platforms"
+build_project_id = "comfyui-ab4"
 build_location   = "us-central1"

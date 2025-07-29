@@ -38,7 +38,7 @@ resource "google_cloudbuildv2_connection" "github" {
   project  = data.google_project.build.project_id
 
   github_config {
-    app_installation_id = 261964
+    app_installation_id = 63318630
 
     authorizer_credential {
       oauth_token_secret_version = "${data.google_secret_manager_secret.github_token.id}/versions/latest"
@@ -51,5 +51,5 @@ resource "google_cloudbuildv2_repository" "accelerated_platforms" {
   name              = "GoogleCloudPlatform-accelerated-platforms"
   parent_connection = google_cloudbuildv2_connection.github.name
   project           = data.google_project.build.project_id
-  remote_uri        = "https://github.com/GoogleCloudPlatform/accelerated-platforms.git"
+  remote_uri        = "https://github.com/aburhan/accelerated-platforms.git"
 }

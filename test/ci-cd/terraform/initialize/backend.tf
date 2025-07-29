@@ -14,7 +14,7 @@
 
 terraform {
   backend "gcs" {
-    bucket = "accelerated-platforms-build-terraform"
+    bucket = "comfyui-ab4-build-terraform"
     prefix = "terraform/initialize"
   }
 }

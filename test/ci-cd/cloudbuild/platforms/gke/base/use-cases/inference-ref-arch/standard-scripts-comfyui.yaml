@@ -22,7 +22,7 @@ steps:
       - TF_VAR_platform_default_project_id="${PROJECT_ID}-$${PROJECT_SUFFIX}"
       - TF_VAR_platform_name="ch${SHORT_SHA}"
       - IAP_PROJECT_ID="${PROJECT_ID}-$${PROJECT_SUFFIX}"
-      - TF_VAR_comfyui_iap_domain="comfyui-ab4.joonix.net"
+      - TF_VAR_comfyui_iap_domain="ameenahb.altostrat.com"
     entrypoint: "test/ci-cd/scripts/platforms/gke/base/configure_build_environment.sh"
     env:
       - BUILD_ID=${BUILD_ID}

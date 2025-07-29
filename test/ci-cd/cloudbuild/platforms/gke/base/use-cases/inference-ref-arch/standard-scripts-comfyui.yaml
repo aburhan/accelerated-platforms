@@ -31,8 +31,6 @@ steps:
       - SHORT_SHA=${SHORT_SHA}
     id: "Configure the build environment"
     name: "gcr.io/google.com/cloudsdk/cloud-sdk"
-    waitFor:
-      - "Check triggers"
 
   - entrypoint: "test/ci-cd/scripts/cloudbuild/create_iap_brand.sh"
     id: "Create the IAP Brand"

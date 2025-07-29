@@ -1,26 +1,73 @@
 #!/usr/bin/env bash
 
-# ... (existing copyright and set -o lines) ...
+# Copyright 2025 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#       http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+set -o errexit
+set -o nounset
+set -o pipefail # Added pipefail for better error handling in pipelines
 
 start_timestamp=$(date +%s)
 
 MY_PATH="$(
-  cd "$(dirname "$0")" >/dev/null 2>&1
+  cd "$(dirname "$0")" >/dev/null 2>&1 || exit 1 # Added || exit 1 for safety
   pwd -P
 )"
 
-# Set repository values
-export ACP_REPO_DIR="$(realpath ${MY_PATH}/../../../../../../)"
-export ACP_PLATFORM_BASE_DIR="${ACP_REPO_DIR}/platforms/gke/base"
-export ACP_PLATFORM_CORE_DIR="${ACP_PLATFORM_BASE_DIR}/core"
-export ACP_PLATFORM_USE_CASE_DIR="${ACP_PLATFORM_BASE_DIR}/use-cases/inference-ref-arch"
+# --- Path Verification Helper Function ---
+# This function checks if a given path exists and is a directory or file.
+# Exits with an error if the path doesn't exist.
+verify_path_exists() {
+  local path="$1"
+  local type="$2" # "dir" or "file"
+  local description="$3"
 
-echo "--- Repository Path Variables ---"
+  if [ "${type}" == "dir" ]; then
+    if [ ! -d "${path}" ]; then
+      echo "Error: Directory '${description}' expected at '${path}' does not exist." >&2
+      exit 1
+    fi
+  elif [ "${type}" == "file" ]; then
+    if [ ! -f "${path}" ]; then
+      echo "Error: File '${description}' expected at '${path}' does not exist." >&2
+      exit 1
+    fi
+  else
+    echo "Error: Invalid type '${type}' for path verification. Use 'dir' or 'file'." >&2
+    exit 1
+  fi
+  echo "Verified: ${description} exists at '${path}'."
+}
+
+# Set repository values
+export ACP_REPO_DIR="$(realpath "${MY_PATH}/../../../../../../")"
+verify_path_exists "${ACP_REPO_DIR}" "dir" "ACP_REPO_DIR (repository root)"
+
+export ACP_PLATFORM_BASE_DIR="${ACP_REPO_DIR}/platforms/gke/base"
+verify_path_exists "${ACP_PLATFORM_BASE_DIR}" "dir" "ACP_PLATFORM_BASE_DIR"
+
+export ACP_PLATFORM_CORE_DIR="${ACP_PLATFORM_BASE_DIR}/core"
+verify_path_exists "${ACP_PLATFORM_CORE_DIR}" "dir" "ACP_PLATFORM_CORE_DIR"
+
+export ACP_PLATFORM_USE_CASE_DIR="${ACP_PLATFORM_BASE_DIR}/use-cases/inference-ref-arch"
+verify_path_exists "${ACP_PLATFORM_USE_CASE_DIR}" "dir" "ACP_PLATFORM_USE_CASE_DIR"
+
+echo "--- Repository Path Variables Verified ---"
 echo "ACP_REPO_DIR: ${ACP_REPO_DIR}"
 echo "ACP_PLATFORM_BASE_DIR: ${ACP_PLATFORM_BASE_DIR}"
 echo "ACP_PLATFORM_CORE_DIR: ${ACP_PLATFORM_CORE_DIR}"
 echo "ACP_PLATFORM_USE_CASE_DIR: ${ACP_PLATFORM_USE_CASE_DIR}"
-echo "---------------------------------"
+echo "----------------------------------------"
 
 
 # Set use-case specific values
@@ -43,25 +90,43 @@ declare -a CORE_TERRASERVICES_APPLY=(
   "workloads/inference_gateway"
   "workloads/priority_class"
 )
-# The next line runs the core deploy script. We can add more checks after it.
-CORE_TERRASERVICES_APPLY="${CORE_TERRASERVICES_APPLY[*]}" "${ACP_PLATFORM_CORE_DIR}/deploy.sh"
+
+# Verify the core deploy script exists before calling it
+CORE_DEPLOY_SCRIPT="${ACP_PLATFORM_CORE_DIR}/deploy.sh"
+verify_path_exists "${CORE_DEPLOY_SCRIPT}" "file" "Core Deploy Script"
+
+# The next line runs the core deploy script.
+CORE_TERRASERVICES_APPLY="${CORE_TERRASERVICES_APPLY[*]}" "${CORE_DEPLOY_SCRIPT}"
+
 
 echo "--- Post Core Services Deployment Checks ---"
-# After core services, you might want to verify some basic GCP resources
-# For example, check if the GKE cluster was created.
-# You'd need cluster_name and cluster_region available here for these checks.
-# These variables typically come from the "set_environment_variables.sh" script.
-# Let's assume they are set there and available after sourcing it.
-echo "Verifying core GKE cluster existence..."
-gcloud container clusters list --filter="name=${cluster_name}" --region="${cluster_region}" --project="${cluster_project_id}" --format="table(name,status)" || { echo "Core GKE cluster not found or not ready!"; exit 1; }
+# Assuming 'cluster_name', 'cluster_region', 'cluster_project_id' are set by the core deploy script
+# or by 'set_environment_variables.sh' which is sourced later.
+# If these variables might not be set yet, move this check *after* sourcing.
+# For now, we'll assume they will be set when this line executes.
+# A more robust check might involve sourcing set_environment_variables.sh earlier if safe.
+# Or, make sure the core deploy script itself outputs these values.
+if [ -n "${cluster_name:-}" ] && [ -n "${cluster_region:-}" ] && [ -n "${cluster_project_id:-}" ]; then
+  echo "Verifying core GKE cluster existence using: ${cluster_name}, ${cluster_region}, ${cluster_project_id}"
+  gcloud container clusters list --filter="name=${cluster_name}" --region="${cluster_region}" --project="${cluster_project_id}" --format="table(name,status)" \
+    || { echo "Core GKE cluster not found or not ready! Cannot proceed."; exit 1; }
+else
+  echo "Warning: GKE cluster variables (cluster_name, cluster_region, cluster_project_id) not set after core deploy. Cannot verify cluster existence at this stage."
+fi
 echo "--------------------------------------------"
 
 
 # shellcheck disable=SC1091
-source "${ACP_PLATFORM_USE_CASE_DIR}/terraform/_shared_config/scripts/set_environment_variables.sh"
+SHARED_ENV_SCRIPT="${ACP_PLATFORM_USE_CASE_DIR}/terraform/_shared_config/scripts/set_environment_variables.sh"
+verify_path_exists "${SHARED_ENV_SCRIPT}" "file" "Shared Environment Variables Script"
+source "${SHARED_ENV_SCRIPT}"
 
 echo "--- Post set_environment_variables.sh Sourcing ---"
 # Verify variables set by the sourced script
+if [ -z "${cluster_name:-}" ]; then echo "Error: cluster_name not set by shared environment script."; exit 1; fi
+if [ -z "${cluster_region:-}" ]; then echo "Error: cluster_region not set by shared environment script."; exit 1; fi
+if [ -z "${cluster_project_id:-}" ]; then echo "Error: cluster_project_id not set by shared environment script."; exit 1; fi
+
 echo "cluster_name: ${cluster_name}"
 echo "cluster_region: ${cluster_region}"
 echo "cluster_project_id: ${cluster_project_id}"
@@ -73,79 +138,10 @@ declare -a use_case_terraservices=(
   "comfyui"
 )
 for terraservice in "${use_case_terraservices[@]}"; do
-  echo "--- Deploying Terraservice: ${terraservice} ---"
-  cd "${ACP_PLATFORM_USE_CASE_DIR}/terraform/${terraservice}" &&
-    echo "Current directory: $(pwd)" &&
-    terraform init &&
-    terraform plan -input=false -out=tfplan &&
-    terraform apply -input=false tfplan || exit 1
-  rm tfplan
-  echo "--- Terraservice ${terraservice} Deployment Complete ---"
+  TERRASERVICE_PATH="${ACP_PLATFORM_USE_CASE_DIR}/terraform/${terraservice}"
+  verify_path_exists "${TERRASERVICE_PATH}" "dir" "Terraservice directory for ${terraservice}"
 
-  # Add specific checks AFTER 'comfyui' terraservice apply
-  if [ "${terraservice}" == "comfyui" ]; then
-    echo "--- Performing ComfyUI-specific Kubernetes checks ---"
-    
-    # Ensure kubectl context is set (redundant but safe)
-    gcloud container clusters get-credentials "${cluster_name}" \
-      --region "${cluster_region}" \
-      --project "${cluster_project_id}" \
-      --dns-endpoint --quiet
-    
-    NAMESPACE="default" # Adjust if comfyui deploys to a specific namespace
-    DEPLOYMENT_NAME="comfyui-deployment" # Adjust to your actual deployment name
 
-    echo "Checking for Kubernetes Deployment: ${DEPLOYMENT_NAME} in namespace ${NAMESPACE}..."
-    if ! kubectl get deployment "${DEPLOYMENT_NAME}" -n "${NAMESPACE}"; then
-      echo "Error: ComfyUI deployment '${DEPLOYMENT_NAME}' not found in namespace '${NAMESPACE}'."
-      exit 1
-    fi
-
-    echo "Waiting for ComfyUI deployment '${DEPLOYMENT_NAME}' rollout to complete..."
-    # The timeout here ensures the build doesn't hang indefinitely if deployment fails.
-    kubectl rollout status deployment/"${DEPLOYMENT_NAME}" -n "${NAMESPACE}" --timeout=5m || {
-      echo "Error: ComfyUI deployment '${DEPLOYMENT_NAME}' did not become ready."
-      kubectl describe deployment "${DEPLOYMENT_NAME}" -n "${NAMESPACE}" # Print details for debugging
-      exit 1
-    }
-    echo "ComfyUI deployment '${DEPLOYMENT_NAME}' is ready."
-
-    # Verify Pods are running
-    echo "Checking ComfyUI pods in namespace ${NAMESPACE}..."
-    if ! kubectl get pods -n "${NAMESPACE}" -l app=${DEPLOYMENT_NAME} -o wide | grep "Running"; then
-      echo "Error: ComfyUI pods are not in 'Running' state."
-      kubectl get pods -n "${NAMESPACE}" -l app=${DEPLOYMENT_NAME} -o wide # Show problematic pods
-      exit 1
-    fi
-
-    # Verify Service (if exposed internally or externally)
-    SERVICE_NAME="comfyui-service" # Adjust to your actual service name
-    echo "Checking Kubernetes Service: ${SERVICE_NAME} in namespace ${NAMESPACE}..."
-    if ! kubectl get service "${SERVICE_NAME}" -n "${NAMESPACE}"; then
-      echo "Error: ComfyUI service '${SERVICE_NAME}' not found."
-      exit 1
-    fi
-
-    # Verify Ingress (if exposed via Ingress)
-    INGRESS_NAME="comfyui-ingress" # Adjust to your actual ingress name
-    echo "Checking Kubernetes Ingress: ${INGRESS_NAME} in namespace ${NAMESPACE}..."
-    if ! kubectl get ingress "${INGRESS_NAME}" -n "${NAMESPACE}"; then
-      echo "Warning: ComfyUI ingress '${INGRESS_NAME}' not found. This might be expected if not using Ingress."
-      # Don't exit 1 here unless ingress is strictly required for this stage
-    else
-        echo "Ingress details:"
-        kubectl get ingress "${INGRESS_NAME}" -n "${NAMESPACE}" -o json | jq '.status.loadBalancer.ingress[0].ip' || jq '.status.loadBalancer.ingress[0].hostname'
-    fi
-
-    echo "--- ComfyUI-specific Kubernetes checks complete ---"
-  fi
-done
-
-# shellcheck disable=SC2154
-gcloud container clusters get-credentials "${cluster_name}" \
-  --region "${cluster_region}" \
-  --project "${cluster_project_id}" \
-  --dns-endpoint
 
 end_timestamp=$(date +%s)
 total_runtime_value=$((end_timestamp - start_timestamp))

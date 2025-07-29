@@ -67,14 +67,6 @@ steps:
     waitFor:
       - "Apply inference-ref-arch Terraservice 'workflow_api'"
 
-  - args:
-      - platforms/gke/base/use-cases/inference-ref-arch/terraform
-      - workflow_api
-    entrypoint: "test/ci-cd/scripts/terraservice/destroy.sh"
-    id: "Destroy inference-ref-arch Terraservice 'workflow_api'"
-    name: "gcr.io/google.com/cloudsdk/cloud-sdk"
-    waitFor:
-      - "Check inference-ref-arch Terraservice 'workflow_api' check for changes"
 
 substitutions:
   _DEBUG: "false"

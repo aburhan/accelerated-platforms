@@ -53,14 +53,14 @@ echo "Queued prompt successfully. The Prompt ID is: ${PROMPT_ID}"
 # --- Second Call: Get the prompt history using the prompt_id ---
 
 # Create a new JWT for the history endpoint, using the stored PROMPT_ID
-create_jwt "/history/${PROMPT_ID}" "history-token.jwt"
+create_jwt "/api/v1/history/${PROMPT_ID}" "token.jwt"
 
 # Make the API call to retrieve the history
 HISTORY_RESPONSE=$(curl --silent \
---header "Authorization: Bearer $(cat history-token.jwt)" \
+--header "Authorization: Bearer $(cat token.jwt)" \
 --header "Content-Type: application/json" \
 --request GET \
-"https://${HOSTNAME}/history/${PROMPT_ID}")
+"https://${HOSTNAME}/api/v1/history/${PROMPT_ID}")
 
 echo "History for prompt ${PROMPT_ID}:"
 echo "${HISTORY_RESPONSE}"

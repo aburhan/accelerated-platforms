@@ -31,11 +31,8 @@ EOF
 }
 
 # --- First Call: Queue a prompt and get the prompt_id ---
-
-# Create JWT for queue_prompt endpoint
 create_jwt "/api/v1/queue_prompt" "token.jwt"
 
-# Make the API call to queue a new prompt and store the prompt_id
 PROMPT_ID=$(curl --silent \
 --data "@workflows/sdxl.json" \
 --header "Authorization: Bearer $(cat token.jwt)" \
@@ -50,17 +47,42 @@ fi
 
 echo "Queued prompt successfully. The Prompt ID is: ${PROMPT_ID}"
 
-# --- Second Call: Get the prompt history using the prompt_id ---
+# --------------------------------------------------------
+
+# --- Second Call: Poll for prompt history and output file ---
+echo "Starting to poll for output for prompt_id: ${PROMPT_ID}..."
+TIMEOUT=300 # 5 minutes
+SLEEP_INTERVAL=5 # seconds
+START_TIME=$(date +%s)
 
 # Create a new JWT for the history endpoint, using the stored PROMPT_ID
-create_jwt "/api/v1/history/${PROMPT_ID}" "token.jwt"
+create_jwt "/api/v1/history/${PROMPT_ID}" "history_token.jwt"
 
-# Make the API call to retrieve the history
-HISTORY_RESPONSE=$(curl --silent \
---header "Authorization: Bearer $(cat token.jwt)" \
---header "Content-Type: application/json" \
---request GET \
-"https://${HOSTNAME}/api/v1/history/${PROMPT_ID}")
+while (( $(date +%s) - START_TIME < TIMEOUT )); do
+  HISTORY_RESPONSE=$(curl --silent \
+  --header "Authorization: Bearer $(cat history_token.jwt)" \
+  --header "Content-Type: application/json" \
+  --request GET \
+  "https://${HOSTNAME}/api/v1/history/${PROMPT_ID}")
 
-echo "History for prompt ${PROMPT_ID}:"
-echo "${HISTORY_RESPONSE}"
+  # Use a single jq filter to handle both 'video' and 'images' and dynamic keys
+  FILENAME=$(echo "${HISTORY_RESPONSE}" | jq -r --arg prompt_id "${PROMPT_ID}" '
+    .[$prompt_id].outputs[] | .video[0][0] // .images[0].filename
+  ')
+
+  STATUS=$(echo "${HISTORY_RESPONSE}" | jq -r --arg prompt_id "${PROMPT_ID}" '
+    .[$prompt_id].status.status_str
+  ')
+
+  if [[ -n "${FILENAME}" ]]; then
+    echo "Output found! Filename: ${FILENAME}"
+    echo "Workflow Status: ${STATUS}"
+    exit 0
+  fi
+
+  echo "Output not ready (status: ${STATUS}). Waiting ${SLEEP_INTERVAL} seconds..."
+  sleep "${SLEEP_INTERVAL}"
+done
+
+echo "Error: Timeout reached after ${TIMEOUT} seconds. No output found."
+exit 1

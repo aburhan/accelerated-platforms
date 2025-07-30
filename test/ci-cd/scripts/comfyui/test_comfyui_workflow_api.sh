@@ -2,9 +2,9 @@
 
 set -e # Exit immediately if a command exits with a non-zero status.
 
+ls
 # Define variables for clarity and ease of maintenance
-ACP_REPO_DIR=${ACP_REPO_DIR}
-WORKFLOW_DIR="${ACP_REPO_DIR}/platforms/gke/base/use-cases/inference-ref-arch/terraform/workflow_api"
+WORKFLOW_DIR="./platforms/gke/base/use-cases/inference-ref-arch/terraform/workflow_api"
 HOSTNAME="workflow-api.comfyui.inf-dev.endpoints.comfyui-ab8.cloud.goog"
 SERVICE_ACCOUNT_EMAIL="inf-dev-workflow-api@comfyui-ab8.iam.gserviceaccount.com"
 

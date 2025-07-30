@@ -34,7 +34,7 @@ EOF
 create_jwt "/api/v1/queue_prompt" "token.jwt"
 
 PROMPT_ID=$(curl --silent \
---data "@workflows/sdxl.json" \
+--data "@workflows/imagen3-veo2-text-to-image-to-video.json" \
 --header "Authorization: Bearer $(cat token.jwt)" \
 --header "Content-Type: application/json" \
 --request POST \

@@ -118,18 +118,26 @@ For more information about providing values for Terraform input variables, see
 > At the time this guide was written, Cloud Shell had Terraform v1.5.7 installed
 > by default. Terraform version 1.8.0 or later is required for this guide.
 
-- Run the `install-terraform.sh` script to install Terraform 1.8.0.
+- Run the `install_terraform.sh` script to install Terraform 1.8.0.
 
   ```shell
-  "${ACP_REPO_DIR}/tools/bin/install-terraform.sh"
+  "${ACP_REPO_DIR}/tools/bin/install_terraform.sh"
   ```
 
 ## Deploy and configure Google Cloud resources
 
 - Deploy the inference reference implementation.
 
+  **GKE Autopilot**
+
   ```shell
-  ${ACP_REPO_DIR}/platforms/gke/base/use-cases/inference-ref-arch/terraform/deploy.sh
+  ${ACP_REPO_DIR}/platforms/gke/base/use-cases/inference-ref-arch/terraform/deploy-ap.sh
+  ```
+
+  **GKE Standard**
+
+  ```shell
+  ${ACP_REPO_DIR}/platforms/gke/base/use-cases/inference-ref-arch/terraform/deploy-standard.sh
   ```
 
 - Configure the platform.
@@ -155,7 +163,7 @@ For more information about providing values for Terraform input variables, see
   - VPC firewall rules
     - Allow Google API direct connectivity rule
 
-- Private GKE Standard Cluster
+- Private GKE Cluster
 
   - Automatic application monitoring
   - Custom Compute Classes
@@ -212,6 +220,14 @@ For more information about providing values for Terraform input variables, see
 
 - Teardown the inference reference implementation.
 
+  **GKE Autopilot**
+
   ```shell
-  ${ACP_REPO_DIR}/platforms/gke/base/use-cases/inference-ref-arch/terraform/teardown.sh
+  ${ACP_REPO_DIR}/platforms/gke/base/use-cases/inference-ref-arch/terraform/teardown-ap.sh
+  ```
+
+  **GKE Standard**
+
+  ```shell
+  ${ACP_REPO_DIR}/platforms/gke/base/use-cases/inference-ref-arch/terraform/teardown-standard.sh
   ```

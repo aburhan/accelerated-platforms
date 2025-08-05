@@ -62,20 +62,40 @@ For more information about providing values for Terraform input variables, see
 > At the time this guide was written, Cloud Shell had Terraform v1.5.7 installed
 > by default. Terraform version 1.8.0 or later is required for this guide.
 
-- Run the `install-terraform.sh` script to install Terraform 1.8.0.
+- Run the `install_terraform.sh` script to install Terraform 1.8.0.
 
   ```shell
-  "${ACP_REPO_DIR}/tools/bin/install-terraform.sh"
+  "${ACP_REPO_DIR}/tools/bin/install_terraform.sh"
   ```
 
 ## Deploy
 
-```shell
-${ACP_REPO_DIR}/platforms/gke/base/core/deploy.sh
-```
+- Deploy the reference implementation.
+
+  **GKE Autopilot**
+
+  ```shell
+  ${ACP_REPO_DIR}/platforms/gke/base/core/deploy-ap.sh
+  ```
+
+  **GKE Standard**
+
+  ```shell
+  ${ACP_REPO_DIR}/platforms/gke/base/core/deploy-standard.sh
+  ```
 
 ## Teardown
 
-```shell
-${ACP_REPO_DIR}/platforms/gke/base/core/teardown.sh
-```
+- Teardown the reference implementation.
+
+  **GKE Autopilot**
+
+  ```shell
+  ${ACP_REPO_DIR}/platforms/gke/base/core/teardown-ap.sh
+  ```
+
+  **GKE Standard**
+
+  ```shell
+  ${ACP_REPO_DIR}/platforms/gke/base/core/teardown-standard.sh
+  ```

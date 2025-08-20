@@ -31,7 +31,7 @@ while !  gcloud iap oauth-brands create \
   --application_title="IAP Secured Application" \
   --project="${IAP_PROJECT_ID}" \
   --quiet \
-  --support_email="iap-support@admin@ameenahb.altostrat.com"
+  --support_email="admin@admin@ameenahb.altostrat.com"
 do
   sleep 5
 done

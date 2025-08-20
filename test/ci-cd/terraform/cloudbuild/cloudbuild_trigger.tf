@@ -900,7 +900,7 @@ resource "google_cloudbuild_trigger" "platforms_gke_base_uc_inference_ref_arch_s
   }
 
   substitutions = {
-    _IAP_DOMAIN       = "accelerated-platforms.joonix.net"
+    _IAP_DOMAIN       = "admin@ameenahb.altostrat.com"
     _WAIT_FOR_TRIGGER = google_cloudbuild_trigger.acp_ci_cd_runner_image.trigger_id
   }
 }
@@ -924,7 +924,7 @@ resource "google_cloudbuild_trigger" "platforms_gke_base_uc_inference_ref_arch_s
   }
 
   substitutions = {
-    _IAP_DOMAIN       = "accelerated-platforms.joonix.net"
+    _IAP_DOMAIN       = "admin@ameenahb.altostrat.com"
     _WAIT_FOR_TRIGGER = google_cloudbuild_trigger.acp_ci_cd_runner_image.trigger_id
   }
 }
@@ -976,7 +976,7 @@ resource "google_cloudbuild_trigger" "platforms_gke_base_uc_inference_ref_arch_c
   }
 
   substitutions = {
-    _IAP_DOMAIN       = "accelerated-platforms.joonix.net"
+    _IAP_DOMAIN       = "admin@ameenahb.altostrat.com"
     _WAIT_FOR_TRIGGER = google_cloudbuild_trigger.acp_ci_cd_runner_image.trigger_id
   }
 }
@@ -1000,7 +1000,7 @@ resource "google_cloudbuild_trigger" "platforms_gke_base_uc_inference_ref_arch_c
   }
 
   substitutions = {
-    _IAP_DOMAIN       = "accelerated-platforms.joonix.net"
+    _IAP_DOMAIN       = "admin@ameenahb.altostrat.com"
     _WAIT_FOR_TRIGGER = google_cloudbuild_trigger.acp_ci_cd_runner_image.trigger_id
   }
 }

@@ -19,19 +19,19 @@ set -o pipefail
 
 echo "Accessing 'project-creator-service-account' secret..."
 PROJECT_CREATOR_SA=$(gcloud secrets versions access latest \
-  --project="accelerated-platforms" \
+  --project="comfyui-ab10" \
   --secret="project-creator-service-account")
 
 echo "Accessing 'project-creator-billing-account-id' secret..."
 PROJECT_CREATOR_BILLING_ACCOUNT=$(gcloud secrets versions access latest \
   --impersonate-service-account="${PROJECT_CREATOR_SA}" \
-  --project="accelerated-platforms" \
+  --project="comfyui-ab10" \
   --secret="project-creator-billing-account-id" 2>&1 | grep -v 'impersonation')
 
 echo "Accessing 'project-creator-folder-id' secret..."
 PROJECT_CREATOR_FOLDER_ID=$(gcloud secrets versions access latest \
   --impersonate-service-account="${PROJECT_CREATOR_SA}" \
-  --project="accelerated-platforms" \
+  --project="comfyui-ab10" \
   --secret="project-creator-folder-id" 2>&1 | grep -v 'impersonation')
 
 echo "Creating project '${NEW_PROJECT_ID}'..."

@@ -55,4 +55,4 @@ source "${ACP_PLATFORM_BASE_DIR}/_shared_config/scripts/set_environment_variable
 
 # Create a dedicated project
 export NEW_PROJECT_ID="${platform_default_project_id}"
-${ACP_REPO_DIR}/test/ci-cd/scripts/create_project.sh
+#${ACP_REPO_DIR}/test/ci-cd/scripts/create_project.sh

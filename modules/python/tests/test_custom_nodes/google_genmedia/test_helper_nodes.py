@@ -100,7 +100,7 @@ class TestVeoVideoSaveAndPreview(unittest.TestCase):
     @patch("src.custom_nodes.google_genmedia.helper_nodes.hashlib.md5")
     @patch(
         "src.custom_nodes.google_genmedia.helper_nodes.folder_paths.get_temp_directory",
-        return_value="/tmp/fake_temp_dir",
+        return_value=".",
     )
     def test_preview_video_save(
         self,
@@ -145,7 +145,7 @@ class TestVeoVideoSaveAndPreview(unittest.TestCase):
     @patch("src.custom_nodes.google_genmedia.helper_nodes.VideoFileClip")
     @patch(
         "src.custom_nodes.google_genmedia.helper_nodes.folder_paths.get_temp_directory",
-        return_value="/tmp/fake_temp_dir",
+        return_value=".",
     )
     def test_preview_video_preview_only(
         self,

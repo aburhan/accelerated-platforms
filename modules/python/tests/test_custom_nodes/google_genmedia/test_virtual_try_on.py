@@ -117,9 +117,7 @@ class TestVirtualTryOn(unittest.TestCase):
     @patch(
         "src.custom_nodes.google_genmedia.virtual_try_on.utils.tensor_to_pil_to_base64"
     )
-    def test_generate_and_return_image_predict_failure(
-        self, mock_tensor_to_base64
-    ):
+    def test_generate_and_return_image_predict_failure(self, mock_tensor_to_base64):
         # Arrange
         person_image = torch.rand(1, 512, 512, 3)
         product_image = torch.rand(1, 512, 512, 3)

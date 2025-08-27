@@ -81,7 +81,9 @@ class TestVeo2Nodes(unittest.TestCase):
         mock_veo_api.side_effect = Exception("Init failed")
 
         # Act & Assert
-        with self.assertRaisesRegex(RuntimeError, "Failed to initialize Veo API: Init failed"):
+        with self.assertRaisesRegex(
+            RuntimeError, "Failed to initialize Veo API: Init failed"
+        ):
             Veo2TextToVideoNode().generate(prompt="test")
 
 

@@ -264,7 +264,9 @@ class TestUtils(unittest.TestCase):
         mock_client.models.generate_images.return_value = mock_response
 
         # Act
-        with patch("src.custom_nodes.google_genmedia.utils.PIL_Image.open") as mock_pil_open:
+        with patch(
+            "src.custom_nodes.google_genmedia.utils.PIL_Image.open"
+        ) as mock_pil_open:
             images = utils.generate_image_from_text(
                 client=mock_client,
                 model="imagen3",
@@ -315,7 +317,10 @@ class TestUtils(unittest.TestCase):
 
     # --- Tests for generate_video_from_text ---
 
-    @patch("src.custom_nodes.google_genmedia.utils.process_video_response", return_value=["/tmp/fake.mp4"])
+    @patch(
+        "src.custom_nodes.google_genmedia.utils.process_video_response",
+        return_value=["/tmp/fake.mp4"],
+    )
     @patch("src.custom_nodes.google_genmedia.utils.genai.Client")
     def test_generate_video_from_text_success(self, mock_client, mock_process_video):
         # Arrange
@@ -345,7 +350,7 @@ class TestUtils(unittest.TestCase):
 
         # Assert
         self.assertEqual(video_paths, ["/tmp/fake.mp4"])
-        mock_client.operations.get.assert_not_called() # Should not poll if done
+        mock_client.operations.get.assert_not_called()  # Should not poll if done
 
     @patch("src.custom_nodes.google_genmedia.utils.genai.Client")
     def test_generate_video_from_text_invalid_argument(self, mock_client):
@@ -378,9 +383,14 @@ class TestUtils(unittest.TestCase):
     # --- Tests for generate_video_from_gcsuri_image ---
 
     @patch("src.custom_nodes.google_genmedia.utils.validate_gcs_uri_and_image")
-    @patch("src.custom_nodes.google_genmedia.utils.process_video_response", return_value=["/tmp/fake.mp4"])
+    @patch(
+        "src.custom_nodes.google_genmedia.utils.process_video_response",
+        return_value=["/tmp/fake.mp4"],
+    )
     @patch("src.custom_nodes.google_genmedia.utils.genai.Client")
-    def test_generate_video_from_gcsuri_image_success(self, mock_client, mock_process_video, mock_validate_gcs):
+    def test_generate_video_from_gcsuri_image_success(
+        self, mock_client, mock_process_video, mock_validate_gcs
+    ):
         # Arrange
         mock_validate_gcs.return_value = (True, "Valid URI message")
         mock_operation = MagicMock()
@@ -412,6 +422,7 @@ class TestUtils(unittest.TestCase):
 
         # Assert
         self.assertEqual(video_paths, ["/tmp/fake.mp4"])
+
 
 if __name__ == "__main__":
     unittest.main()

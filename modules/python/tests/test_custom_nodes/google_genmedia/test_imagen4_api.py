@@ -75,7 +75,6 @@ class TestImagen4API(unittest.TestCase):
                 safety_filter_level="BLOCK_LOW_AND_ABOVE",
             )
 
-
     @patch(
         "src.custom_nodes.google_genmedia.imagen4_api.utils.generate_image_from_text"
     )

@@ -168,9 +168,17 @@ class _FakeTypesModule:
 
 class TestGenerateContentHappyAndOptions(unittest.TestCase):
     def test_stop_sequences_and_response_mime_type_and_system_instruction(self):
-        with patch("src.custom_nodes.google_genmedia.gemini_nodes.GeminiNode25.__init__", return_value=None):
-            with patch("src.custom_nodes.google_genmedia.gemini_nodes.types", _FakeTypesModule):
-                with patch("src.custom_nodes.google_genmedia.gemini_nodes.utils.prep_for_media_conversion", return_value=None):
+        with patch(
+            "src.custom_nodes.google_genmedia.gemini_nodes.GeminiNode25.__init__",
+            return_value=None,
+        ):
+            with patch(
+                "src.custom_nodes.google_genmedia.gemini_nodes.types", _FakeTypesModule
+            ):
+                with patch(
+                    "src.custom_nodes.google_genmedia.gemini_nodes.utils.prep_for_media_conversion",
+                    return_value=None,
+                ):
                     node = GeminiNode25.__new__(GeminiNode25)
                     node.client = MagicMock()
                     captured = {}
@@ -187,7 +195,9 @@ class TestGenerateContentHappyAndOptions(unittest.TestCase):
                         fake_response.prompt_feedback = None
                         return fake_response
 
-                    node.client.models.generate_content.side_effect = _fake_generate_content
+                    node.client.models.generate_content.side_effect = (
+                        _fake_generate_content
+                    )
 
                     result = node.generate_content(
                         prompt="hello",
@@ -221,8 +231,13 @@ class TestGenerateContentHappyAndOptions(unittest.TestCase):
                     self.assertEqual(len(cfg.safety_settings), 4)
 
     def test_includes_all_media_parts_when_paths_supplied(self):
-        with patch("src.custom_nodes.google_genmedia.gemini_nodes.GeminiNode25.__init__", return_value=None):
-            with patch("src.custom_nodes.google_genmedia.gemini_nodes.types", _FakeTypesModule):
+        with patch(
+            "src.custom_nodes.google_genmedia.gemini_nodes.GeminiNode25.__init__",
+            return_value=None,
+        ):
+            with patch(
+                "src.custom_nodes.google_genmedia.gemini_nodes.types", _FakeTypesModule
+            ):
                 node = GeminiNode25.__new__(GeminiNode25)
                 node.client = MagicMock()
                 captured = {}
@@ -270,17 +285,30 @@ class TestGenerateContentHappyAndOptions(unittest.TestCase):
                 self.assertIn("AUD", contents)
 
     def test_prints_when_media_paths_given_but_no_content(self):
-        with patch("src.custom_nodes.google_genmedia.gemini_nodes.GeminiNode25.__init__", return_value=None):
-            with patch("src.custom_nodes.google_genmedia.gemini_nodes.print") as mock_print:
-                with patch("src.custom_nodes.google_genmedia.gemini_nodes.types", _FakeTypesModule):
-                    with patch("src.custom_nodes.google_genmedia.gemini_nodes.utils.prep_for_media_conversion", return_value=None):
+        with patch(
+            "src.custom_nodes.google_genmedia.gemini_nodes.GeminiNode25.__init__",
+            return_value=None,
+        ):
+            with patch(
+                "src.custom_nodes.google_genmedia.gemini_nodes.print"
+            ) as mock_print:
+                with patch(
+                    "src.custom_nodes.google_genmedia.gemini_nodes.types",
+                    _FakeTypesModule,
+                ):
+                    with patch(
+                        "src.custom_nodes.google_genmedia.gemini_nodes.utils.prep_for_media_conversion",
+                        return_value=None,
+                    ):
                         node = GeminiNode25.__new__(GeminiNode25)
                         node.client = MagicMock()
 
                         def _fake_generate_content(**kwargs):
                             pass
 
-                        node.client.models.generate_content.side_effect = _fake_generate_content
+                        node.client.models.generate_content.side_effect = (
+                            _fake_generate_content
+                        )
 
                         node.generate_content(
                             prompt="use media",
@@ -300,15 +328,28 @@ class TestGenerateContentHappyAndOptions(unittest.TestCase):
                             video_file_path="b.mp4",
                             audio_file_path="c.mp3",
                         )
-                        mock_print.assert_has_calls([
-                            call("Image path 'a.png' provided but content not retrieved or file not found."),
-                            call("Video path 'b.mp4' provided but content not retrieved or file not found."),
-                            call("Audio path 'c.mp3' provided but content not retrieved or file not found."),
-                        ])
+                        mock_print.assert_has_calls(
+                            [
+                                call(
+                                    "Image path 'a.png' provided but content not retrieved or file not found."
+                                ),
+                                call(
+                                    "Video path 'b.mp4' provided but content not retrieved or file not found."
+                                ),
+                                call(
+                                    "Audio path 'c.mp3' provided but content not retrieved or file not found."
+                                ),
+                            ]
+                        )
 
     def test_default_response_mime_type(self):
-        with patch("src.custom_nodes.google_genmedia.gemini_nodes.GeminiNode25.__init__", return_value=None):
-            with patch("src.custom_nodes.google_genmedia.gemini_nodes.types", _FakeTypesModule):
+        with patch(
+            "src.custom_nodes.google_genmedia.gemini_nodes.GeminiNode25.__init__",
+            return_value=None,
+        ):
+            with patch(
+                "src.custom_nodes.google_genmedia.gemini_nodes.types", _FakeTypesModule
+            ):
                 node = GeminiNode25.__new__(GeminiNode25)
                 node.client = MagicMock()
                 captured = {}
@@ -339,7 +380,10 @@ class TestGenerateContentHappyAndOptions(unittest.TestCase):
 
 class TestGenerateContentFailures(unittest.TestCase):
     def test_reinit_error_returns_message(self):
-        with patch("src.custom_nodes.google_genmedia.gemini_nodes.GeminiNode25.__init__", side_effect=Exception("bad creds")):
+        with patch(
+            "src.custom_nodes.google_genmedia.gemini_nodes.GeminiNode25.__init__",
+            side_effect=Exception("bad creds"),
+        ):
             node = GeminiNode25.__new__(GeminiNode25)
             (msg,) = node.generate_content(
                 prompt="x",
@@ -359,7 +403,10 @@ class TestGenerateContentFailures(unittest.TestCase):
             self.assertIn("Error re-initializing Gemini client", msg)
 
     def test_api_call_failure(self):
-        with patch("src.custom_nodes.google_genmedia.gemini_nodes.GeminiNode25.__init__", return_value=None):
+        with patch(
+            "src.custom_nodes.google_genmedia.gemini_nodes.GeminiNode25.__init__",
+            return_value=None,
+        ):
             node = GeminiNode25.__new__(GeminiNode25)
             node.client = MagicMock()
             node.client.models.generate_content.side_effect = Exception("API error")
@@ -381,7 +428,10 @@ class TestGenerateContentFailures(unittest.TestCase):
             self.assertIn("Error: API error", msg)
 
     def test_blocked_prompt_feedback(self):
-        with patch("src.custom_nodes.google_genmedia.gemini_nodes.GeminiNode25.__init__", return_value=None):
+        with patch(
+            "src.custom_nodes.google_genmedia.gemini_nodes.GeminiNode25.__init__",
+            return_value=None,
+        ):
             node = GeminiNode25.__new__(GeminiNode25)
             node.client = MagicMock()
             mock_response = MagicMock()
@@ -412,7 +462,10 @@ class TestGenerateContentFailures(unittest.TestCase):
             self.assertIn("Category: HATE_SPEECH, Probability: HIGH", msg)
 
     def test_no_candidates_no_feedback(self):
-        with patch("src.custom_nodes.google_genmedia.gemini_nodes.GeminiNode25.__init__", return_value=None):
+        with patch(
+            "src.custom_nodes.google_genmedia.gemini_nodes.GeminiNode25.__init__",
+            return_value=None,
+        ):
             node = GeminiNode25.__new__(GeminiNode25)
             node.client = MagicMock()
             mock_response = MagicMock()
@@ -438,7 +491,10 @@ class TestGenerateContentFailures(unittest.TestCase):
             self.assertEqual("No content generated.", msg)
 
     def test_malformed_response_no_parts(self):
-        with patch("src.custom_nodes.google_genmedia.gemini_nodes.GeminiNode25.__init__", return_value=None):
+        with patch(
+            "src.custom_nodes.google_genmedia.gemini_nodes.GeminiNode25.__init__",
+            return_value=None,
+        ):
             node = GeminiNode25.__new__(GeminiNode25)
             node.client = MagicMock()
             mock_response = MagicMock()

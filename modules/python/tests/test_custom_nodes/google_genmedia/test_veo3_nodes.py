@@ -88,8 +88,12 @@ class TestVeo3Nodes(unittest.TestCase):
         mock_veo_api.side_effect = Exception("Init failed")
 
         # Act & Assert
-        with self.assertRaisesRegex(RuntimeError, "Failed to initialize Veo API: Init failed"):
-            Veo3TextToVideoNode().generate(model=Veo3Model.VEO_3_PREVIEW.name, prompt="test")
+        with self.assertRaisesRegex(
+            RuntimeError, "Failed to initialize Veo API: Init failed"
+        ):
+            Veo3TextToVideoNode().generate(
+                model=Veo3Model.VEO_3_PREVIEW.name, prompt="test"
+            )
 
 
 if __name__ == "__main__":

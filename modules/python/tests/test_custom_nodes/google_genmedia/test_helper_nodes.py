@@ -98,7 +98,10 @@ class TestVeoVideoSaveAndPreview(unittest.TestCase):
     @patch("src.custom_nodes.google_genmedia.helper_nodes.VideoFileClip")
     @patch("builtins.open", new_callable=mock_open, read_data=b"fakedata")
     @patch("src.custom_nodes.google_genmedia.helper_nodes.hashlib.md5")
-    @patch("src.custom_nodes.google_genmedia.helper_nodes.folder_paths.get_temp_directory", return_value="/tmp/fake_temp_dir")
+    @patch(
+        "src.custom_nodes.google_genmedia.helper_nodes.folder_paths.get_temp_directory",
+        return_value="/tmp/fake_temp_dir",
+    )
     def test_preview_video_save(
         self,
         mock_get_temp_directory,
@@ -140,9 +143,17 @@ class TestVeoVideoSaveAndPreview(unittest.TestCase):
     @patch("src.custom_nodes.google_genmedia.helper_nodes.os.path.abspath", lambda x: x)
     @patch("src.custom_nodes.google_genmedia.helper_nodes.shutil.copy2")
     @patch("src.custom_nodes.google_genmedia.helper_nodes.VideoFileClip")
-    @patch("src.custom_nodes.google_genmedia.helper_nodes.folder_paths.get_temp_directory", return_value="/tmp/fake_temp_dir")
+    @patch(
+        "src.custom_nodes.google_genmedia.helper_nodes.folder_paths.get_temp_directory",
+        return_value="/tmp/fake_temp_dir",
+    )
     def test_preview_video_preview_only(
-        self, mock_get_temp_directory, mock_videofileclip, mock_copy, mock_exists, mock_makedirs
+        self,
+        mock_get_temp_directory,
+        mock_videofileclip,
+        mock_copy,
+        mock_exists,
+        mock_makedirs,
     ):
         # Arrange
         mock_clip_instance = MagicMock()
@@ -164,7 +175,9 @@ class TestVeoVideoSaveAndPreview(unittest.TestCase):
         self.assertEqual(video_info["filename"], "video.mp4")
         self.assertEqual(video_info["subfolder"], "temp")
         self.assertEqual(video_info["type"], "temp")
-        mock_copy.assert_called_once_with("/tmp/video.mp4", "/tmp/fake_temp_dir/video.mp4")
+        mock_copy.assert_called_once_with(
+            "/tmp/video.mp4", "/tmp/fake_temp_dir/video.mp4"
+        )
 
 
 if __name__ == "__main__":

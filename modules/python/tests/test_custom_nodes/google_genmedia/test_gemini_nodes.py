@@ -107,6 +107,14 @@ class TestClassAndMappings(unittest.TestCase):
 
     @patch(
         "src.custom_nodes.google_genmedia.gemini_nodes.get_gcp_metadata",
+        side_effect=["proj-123", None],
+    )
+    def test_init_missing_region_raises(self, _mock_meta):
+        with self.assertRaisesRegex(ValueError, "GCP region is required"):
+            GeminiNode25()
+
+    @patch(
+        "src.custom_nodes.google_genmedia.gemini_nodes.get_gcp_metadata",
         return_value="proj-123",
     )
     @patch(

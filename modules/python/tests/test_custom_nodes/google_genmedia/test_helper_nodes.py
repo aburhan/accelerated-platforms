@@ -69,5 +69,6 @@ class TestVeoVideoToVHSNode(unittest.TestCase):
         mock_video_capture.assert_called_with("/fake/video1.mp4")
         self.assertEqual(mock_cap_instance.set.call_count, 120)
 
+
 if __name__ == "__main__":
     unittest.main()

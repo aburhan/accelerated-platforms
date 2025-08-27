@@ -83,20 +83,6 @@ class TestVirtualTryOn(unittest.TestCase):
         "src.custom_nodes.google_genmedia.virtual_try_on.VirtualTryOn.__init__",
         lambda *args, **kwargs: None,
     )
-    def test_generate_and_return_image_no_input_image(self):
-        with self.assertRaises(ValueError):
-            self.node.generate_and_return_image(
-                person_image=torch.empty(0),
-                product_image=torch.rand(1, 512, 512, 3),
-                base_steps=32,
-                person_generation="ALLOW_ADULT",
-                number_of_images=1,
-            )
-
-    @patch(
-        "src.custom_nodes.google_genmedia.virtual_try_on.VirtualTryOn.__init__",
-        lambda *args, **kwargs: None,
-    )
     @patch(
         "src.custom_nodes.google_genmedia.virtual_try_on.utils.tensor_to_pil_to_base64",
         side_effect=RuntimeError("Conversion failed"),

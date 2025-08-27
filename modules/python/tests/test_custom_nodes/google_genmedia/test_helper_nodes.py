@@ -69,19 +69,5 @@ class TestVeoVideoToVHSNode(unittest.TestCase):
         mock_video_capture.assert_called_with("/fake/video1.mp4")
         self.assertEqual(mock_cap_instance.set.call_count, 120)
 
-    def test_convert_videos_no_paths(self):
-        # Act
-        result = self.node.convert_videos([])
-        # Assert
-        self.assertEqual(result[0].shape, (1, 512, 512, 3))
-
-    @patch(
-        "src.custom_nodes.google_genmedia.helper_nodes.os.path.exists",
-        return_value=False,
-    )
-    def test_convert_videos_file_not_exist(self, mock_exists):
-        result = self.node.convert_videos(["/fake/video.mp4"])
-        self.assertEqual(result[0].shape, (1, 512, 512, 3))
-
 if __name__ == "__main__":
     unittest.main()

@@ -98,10 +98,6 @@ class TestVeoVideoSaveAndPreview(unittest.TestCase):
     @patch("src.custom_nodes.google_genmedia.helper_nodes.VideoFileClip")
     @patch("builtins.open", new_callable=mock_open, read_data=b"fakedata")
     @patch("src.custom_nodes.google_genmedia.helper_nodes.hashlib.md5")
-    @patch(
-        "src.custom_nodes.google_genmedia.helper_nodes.folder_paths.get_temp_directory",
-        return_value=".",
-    )
     def test_preview_video_save(
         self,
         mock_get_temp_directory,
@@ -143,10 +139,6 @@ class TestVeoVideoSaveAndPreview(unittest.TestCase):
     @patch("src.custom_nodes.google_genmedia.helper_nodes.os.path.abspath", lambda x: x)
     @patch("src.custom_nodes.google_genmedia.helper_nodes.shutil.copy2")
     @patch("src.custom_nodes.google_genmedia.helper_nodes.VideoFileClip")
-    @patch(
-        "src.custom_nodes.google_genmedia.helper_nodes.folder_paths.get_temp_directory",
-        return_value=".",
-    )
     def test_preview_video_preview_only(
         self,
         mock_get_temp_directory,

@@ -164,7 +164,7 @@ class VirtualTryOn:
             raise ValueError(
                 "Both person_image and product_image must be valid, non-empty images."
             )
-        
+
         try:
             # Re-initialize the client if needed
             init_project_id = gcp_project_id if gcp_project_id else None

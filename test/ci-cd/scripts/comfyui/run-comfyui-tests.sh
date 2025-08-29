@@ -26,7 +26,7 @@ fi
 
 # --- Vars ---
 export ERROR_FILE="${ERROR_FILE:-/workspace/build-failed.lock}"
-export SOURCE_TEST_DIR="${SOURCE_TEST_DIR:-test/ci-cd/scripts/comfyui/}"
+export SOURCE_TEST_DIR="${SOURCE_TEST_DIR:-test/ci-cd/scripts/comfyui}"
 STEP_ID=${1:-build-ci}
 
 # --- Test Configuration ---
